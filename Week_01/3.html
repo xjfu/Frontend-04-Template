@@ -53,19 +53,24 @@
         pattern[x][y] = color
         
         // 判断胜利
-        if(check()) {
+        if(check(pattern, color)) {
             alert(color == 2 ? "✗ is winner": "◯ is winner")
         }
 
         color = 3-color
         show()
+        // 
+        if(willWin(pattern, color)) {
+            log(color == 2 ? "✗ is winner": "◯ is winner")
+        }
+
     }
 
     
 
     // 判断输赢 三横三纵 加斜线
 
-    function check() {
+    function check(pattern, color) {
         // 三横
         for (let i = 0; i < 3; i++) {
             let win = true
@@ -118,6 +123,27 @@
 
         }
         return false
+    }
+    
+    function willWin(pattern, color) {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i][j]) {
+                    continue
+                }
+                let tem = clone(pattern)
+                tem[i][j] = color
+                if(check(tem, color)) {
+                    return true
+                }
+                
+            }
+            
+        }
+    }
+
+    function clone(pattern) {
+        return JSON.parse(JSON.stringify(pattern))
     }
     show(pattern)
 </script>
