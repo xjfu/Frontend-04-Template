@@ -1,5 +1,6 @@
 <!-- TicTacToe -->
-
+<!-- 策略 -->
+<!--  -->
 <style>
     #board {
         width: 306px;
@@ -28,9 +29,9 @@
     const log = console.log.bind(console)
 
     let pattern = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
+        [0, 2, 0],
+        [0, 1, 0],
+        [0, 0, 0]
     ]
     
     let color = 1
@@ -51,7 +52,7 @@
     }
 
     function move(x, y) {
-        log(color)
+     
         pattern[x][y] = color
         
         // 判断胜利
@@ -134,17 +135,53 @@
                 let tem = clone(pattern)
                 tem[i][j] = color
                 if(check(tem, color)) {
-                    return true
+                    return [i, j]
                 }
                 
             }
             
         }
+        return null
     }
 
     function clone(pattern) {
         return JSON.parse(JSON.stringify(pattern))
     }
     
+    function bestChoice(pattern, color) {
+        let p
+        if (willWin(pattern,color)) {
+            return {
+                point:p,
+                result:1,
+            }
+        }
+        let result = -2
+        let point = null
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i][j]) {
+                    continue
+                } else {
+                    let tmp = clone(pattern)
+                    tmp[i][j] = color
+                    let r = bestChoice(tmp, 3-color).result
+                    if (-r > result) {
+                        result = -r
+                        point = [i, j]
+                    }
+                }
+            }
+            
+        }
+        log('result', result)
+        return {
+            point: point,
+            result: point ? result : 0,
+        }
+    }
+    
     show(pattern)
+    
+    console.log(bestChoice(pattern, color))
 </script>
