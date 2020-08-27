@@ -7,6 +7,14 @@
         height: 100px;
         border-radius: 50%;
     }
+    .next {
+        background-color: gray;
+        display: inline-block;
+        margin: 30px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
     .green.light {
         background-color: green;
     }
@@ -20,6 +28,7 @@
 <div class="green"></div>
 <div class="yellow"></div>
 <div class="red"></div>
+<div class="next"></div>
 <script>
     const log = console.log.bind(console)
     function green() {
@@ -43,17 +52,31 @@
         }
         document.querySelector(".yellow").classList.add("light")
     }
-    function go() {
-        green()
-        setTimeout(function(){
-            yellow()
-            setTimeout(function(){
-                red()
-                setTimeout(function(){
-                    go()
-                },500)
-            }, 200)
-        }, 1000)
+    function happen(element, eventName) {
+        return new Promise((resolve, reject)=>{
+            element.addEventListener(eventName, resolve, {once:true})
+        })
+
+    }
+    function sleep(t) {
+        return new Promise((resolve, reject)=>{
+            setTimeout(resolve, t)
+        })
+    }
+    async function go() {
+        while(true) {
+            green()
+            // await sleep(1000)
+            await happen(document.querySelector(".next"), "click")
+            yellow() 
+            // await sleep(200)
+            await happen(document.querySelector(".next"), "click")
+
+            red()
+            // await sleep(500)
+            await happen(document.querySelector(".next"), "click")
+
+        }
     }
     go()
     
