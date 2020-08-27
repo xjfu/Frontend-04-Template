@@ -1,0 +1,28 @@
+<script>
+    // 绿灯10s, 黄灯2s, 红灯5s无线循环。
+    const log = console.log.bind(console)
+    function green() {
+        log("green")
+        setTimeout(function(){
+            yellow()
+        }, 1000)
+    }
+    function red() {
+        log("red")
+        setTimeout(function(){
+            green()
+        }, 500)
+    }
+    function yellow() {
+        log("yellow")
+        setTimeout(function(){
+            red()
+        }, 200)
+    }
+    green()
+    
+</script>
+
+
+
+
