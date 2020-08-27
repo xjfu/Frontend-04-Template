@@ -62,21 +62,33 @@
             setTimeout(resolve, t)
         })
     }
-    async function go() {
+    function* go() {
         while(true) {
             green()
-            // await sleep(1000)
-            await happen(document.querySelector(".next"), "click")
-            yellow() 
-            // await sleep(200)
-            await happen(document.querySelector(".next"), "click")
-
+            yield sleep(1000)
+            yellow()
+            yield sleep(200)
             red()
-            // await sleep(500)
-            await happen(document.querySelector(".next"), "click")
+            yield sleep(500)
 
         }
     }
-    go()
+    function run(iterator) {
+        let {value, done} = iterator.next()
+        if(done) {
+            return 
+        }
+        if (value instanceof Promise) {
+            value.then(()=>{
+                run(iterator)
+            })
+        }
+    }
+    function co(generator) {
+        return function() {
+            return run(generator())
+        }
+    }
+    go = co(go)
     
 </script>
