@@ -1,0 +1,201 @@
+<!-- TicTacToe -->
+<!-- 策略 -->
+<!--  -->
+<style>
+    #board {
+        width: 306px;
+        margin: 0 auto;
+        /* display: flex; */
+
+    }
+
+    .cell {
+        width: 100px;
+        flex-wrap: wrap;
+        height: 100px;
+        background-color: aqua;
+        display: inline-block;
+        border: 1px solid white;
+        vertical-align: middle;
+        margin: 0 auto;
+        padding: 0 auto;
+        line-height: 100px;
+        font-size: 50px;
+        text-align: center;
+    }
+</style>
+<div id="board"></div>
+<script>
+    const log = console.log.bind(console)
+
+    let pattern = [
+        0, 0, 0,
+        0, 0, 0,
+        0, 0, 0,
+    ]
+    
+    let color = 1
+
+    function show() {
+        let board = document.getElementById("board")
+        board.innerHTML = "" //清空board
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                let cell = document.createElement("div")
+                cell.classList.add("cell")
+                cell.innerText = pattern[i*3+j] == 2 ? "✗" : pattern[i*3+j] == 1 ? "◯" : ""
+                // 事件监听
+                cell.addEventListener('click', ()=>userMove(i,j))
+                board.appendChild(cell)
+            }
+        }
+    }
+
+    function userMove(x, y) {
+     
+        pattern[x*3+y] = color
+        
+        // 判断胜利
+        if(check(pattern, color)) {
+            alert(color == 2 ? "✗ is winner": "◯ is winner")
+        }
+
+        color = 3-color
+        show()
+        log(bestChoice(pattern, color))
+        computerMove()
+        // if(willWin(pattern, color)) {
+        //     log(color == 2 ? "✗ is winner": "◯ is winner")
+        // }
+
+    }
+    // 判断输赢 三横三纵 加斜线
+
+    function computerMove() {
+        let choice = bestChoice(pattern, color) 
+        let p = choice.point
+        if (p) {
+            pattern[p[0]*3+p[1]] = color
+        }
+        if (check(pattern, color)) {
+            alert(color == 2 ? "✗ is winner": "◯ is winner")
+        }
+        color = 3 - color
+        show()
+    }
+    function check(pattern, color) {
+        // 三横
+        for (let i = 0; i < 3; i++) {
+            let win = true
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i*3+j] !== color) {
+                    win = false
+                }    
+            }
+            if (win) {
+                return true
+            }
+        }
+        // 三纵
+       
+        for (let i = 0; i < 3; i++) {
+            let win = true
+            for (let j = 0; j < 3; j++) {
+                if (pattern[j*3+i] !== color) {
+                    win = false
+                }    
+            }
+            if (win) {
+                return true
+            }
+
+        }
+        // 三斜
+        {
+            let win = true
+            for (let i = 0; i < 3; i++) {
+                if (pattern[i*3+2-i] !== color) {
+                    win = false
+                }
+            }
+            if(win) {
+                    return true
+                }
+
+        }
+        {
+            let win = true
+            for (let i = 0; i < 3; i++) {
+                if (pattern[i*3+i] !== color) {
+                    win = false
+                }
+            }
+            if(win) {
+                    return true
+                }
+
+        }
+        return false
+    }
+    
+    function willWin(pattern, color) {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i*3+j]!==0) {
+                    continue
+                }
+                // 如果是空，克隆，走这一步
+                let tem = clone(pattern)
+                tem[i*3+j] = color
+                if(check(tem, color)) {
+                    return [i, j]
+                }
+                
+            }
+            
+        }
+        return null
+    }
+
+    function clone(pattern) {
+        return Object.create(pattern)
+    }
+    
+    function bestChoice(pattern, color) {
+        let p = willWin(pattern,color)
+        if (p) {
+            return {
+                point:p,
+                result:1,
+            }
+        }
+        let result = -2
+        let point = null
+        outer:for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i*3+j] !== 0) {
+                    continue
+                } else {
+                    let tmp = clone(pattern)
+                    tmp[i*3+j] = color
+                    let r = bestChoice(tmp, 3-color)
+                    if (-r.result >= result) {
+                        result = -r.result
+                        point = [i, j]
+                    }
+                    if (result == 1) {
+                        break outer
+                    }
+                }
+            }
+            
+        }
+        return {
+            point: point,
+            result: point ? result : 0,
+        }
+    }
+    
+    show(pattern)
+
+</script>
