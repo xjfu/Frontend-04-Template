@@ -45,13 +45,13 @@
                 cell.classList.add("cell")
                 cell.innerText = pattern[i][j] == 2 ? "✗" : pattern[i][j] == 1 ? "◯" : ""
                 // 事件监听
-                cell.addEventListener('click', ()=>move(i,j))
+                cell.addEventListener('click', ()=>userMove(i,j))
                 board.appendChild(cell)
             }
         }
     }
 
-    function move(x, y) {
+    function userMove(x, y) {
      
         pattern[x][y] = color
         
@@ -63,7 +63,7 @@
         color = 3-color
         show()
         log(bestChoice(pattern, color))
-
+        computerMove()
         // if(willWin(pattern, color)) {
         //     log(color == 2 ? "✗ is winner": "◯ is winner")
         // }
@@ -71,6 +71,18 @@
     }
     // 判断输赢 三横三纵 加斜线
 
+    function computerMove() {
+        let choice = bestChoice(pattern, color) 
+        let p = choice.point
+        if (p) {
+            pattern[p[0]][p[1]] = color
+        }
+        if (check(pattern, color)) {
+            alert(color == 2 ? "✗ is winner": "◯ is winner")
+        }
+        color = 3 - color
+        show()
+    }
     function check(pattern, color) {
         // 三横
         for (let i = 0; i < 3; i++) {
