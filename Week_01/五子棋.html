@@ -149,69 +149,90 @@
             alert(color == 2 ? "✗ is winner": "◯ is winner")
         }
         color = 3 - color
-        show()
     }
 
     function check(pattern, color, p) {
         let x = p[0]
         let y = p[1]
-        // 三横
-        for (let i = 0; i < 3; i++) {
-            let win = true
-            for (let j = 0; j < 3; j++) {
-                if (pattern[i*14+j] !== color) {
-                    win = false
-                }    
-            }
-            if (win) {
-                return true
-            }
-        }
-        // 三纵
+        let positonRange = [
+            [x - 4, x + 4],
+            [y - 4, y + 4],
+        ]
        
-        for (let i = 0; i < 3; i++) {
-            let win = true
-            for (let j = 0; j < 3; j++) {
-                if (pattern[j*14+i] !== color) {
-                    win = false
-                }    
-            }
-            if (win) {
-                return true
-            }
+        // 横
+        for (let i = x-4; i < x+4; i++) {
+            let count = 0
 
+            if (i < 0 || i >= 14) {
+                continue
+            }
+            for (let j = y - 4; j < y + 4; j++) {
+                if (j < 0 || j >= 14) {
+                    continue
+                }
+                if (count >= 5) {
+                    return true
+                }
+                if (pattern[j*14+i] === color) {
+                    count = count + 1
+                    continue
+                } else if (pattern[i*14+j] === 0) {
+                    continue
+                } else if (pattern[i*14+j] !== 0 && pattern[j * 14 + i] !== color) {
+                    count = 0
+                    continue
+                }
+            }
         }
+        // 纵
+        for (let i = x-4; i < x+4; i++) {
+            let count = 0
+            if (i < 0 || i >= 14) {
+                continue
+            }
+            for (let j = y - 4; j < y + 4; j++) {
+                if (j < 0 || j >= 14) {
+                    continue
+                }
+                if (count >= 5) {
+                    return true
+                }
+                if (pattern[j*14+i] === color) {
+                    count = count + 1
+                    continue
+                } else if (pattern[j*14+i] === 0) {
+                    continue
+                } else if (pattern[j*14+i] !== 0 && pattern[j * 14 + i] !== color) {
+                    count = 0
+                    continue
+                }
+            }
+        }
+
+        
         // 三斜
         {
-            let win = true
-            for (let i = 0; i < 3; i++) {
-                if (pattern[i*14+2-i] !== color) {
-                    win = false
-                }
-            }
-            if(win) {
-                    return true
-                }
+            
 
         }
-        {
-            let win = true
-            for (let i = 0; i < 3; i++) {
-                if (pattern[i*14+i] !== color) {
-                    win = false
-                }
-            }
-            if(win) {
-                    return true
-                }
+        // {
+        //     let win = true
+        //     for (let i = 0; i < 14; i++) {
+        //         if (pattern[i*14+i] !== color) {
+        //             win = false
+        //         }
+        //     }
+        //     if(win) {
+        //             return true
+        //         }
 
-        }
+        // }
         return false
     }
     
     function willWin(pattern, color) {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
+        for (let i = 0; i < 14; i++) {
+            for (let j = 0; j < 14; j++) {
                 if (pattern[i*14+j]!==0) {
                     continue
                 }
