@@ -1,0 +1,16 @@
+<script>
+    async function* counter() {
+        let i = 0
+        while (true) {
+            
+            yield i++
+
+
+        }
+    }
+    (async function() {
+        for await(let v of counter()) {
+            console.log(v)
+        }
+    })()
+</script>
