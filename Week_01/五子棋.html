@@ -123,8 +123,9 @@
         
         // 判断胜利
         let p = [x, y]
-        
-        if(check(pattern, color, p)) {
+        let c = check(pattern, color, p)
+        log('check',c)
+        if(c) {
             alert(color == 2 ? "✗ is winner": "◯ is winner")
         }
 
@@ -158,75 +159,47 @@
             [x - 4, x + 4],
             [y - 4, y + 4],
         ]
-       
-        // 横
-        for (let i = x-4; i < x+4; i++) {
-            let count = 0
 
-            if (i < 0 || i >= 14) {
-                continue
-            }
-            for (let j = y - 4; j < y + 4; j++) {
-                if (j < 0 || j >= 14) {
-                    continue
-                }
-                if (count >= 5) {
-                    return true
-                }
-                if (pattern[j*14+i] === color) {
-                    count = count + 1
-                    continue
-                } else if (pattern[i*14+j] === 0) {
-                    continue
-                } else if (pattern[i*14+j] !== 0 && pattern[j * 14 + i] !== color) {
-                    count = 0
-                    continue
+        for (let i = positonRange[0][0]; i <= positonRange[0][1]; i++) {
+
+            if (i + 4 < 14 && i >= 0) {
+                if(pattern[i*14 + y] === pattern[(i+1)*14 + y] && pattern[i*14 + y] !== 0) {
+                    if( pattern[(i+1)*14 + y] === pattern[(i+2) * 14 + y]) {
+                        if( pattern[(i+2) * 14 + y]=== pattern[(i+3)*14 + y]) {
+                            if( pattern[(i+3)*14 + y] === pattern[(i+4)*14 + y]) {
+                                return true
+                            }
+                        }
+                    }
                 }
             }
         }
-        // 纵
-        for (let i = x-4; i < x+4; i++) {
-            let count = 0
-            if (i < 0 || i >= 14) {
-                continue
-            }
-            for (let j = y - 4; j < y + 4; j++) {
-                if (j < 0 || j >= 14) {
-                    continue
-                }
-                if (count >= 5) {
-                    return true
-                }
-                if (pattern[j*14+i] === color) {
-                    count = count + 1
-                    continue
-                } else if (pattern[j*14+i] === 0) {
-                    continue
-                } else if (pattern[j*14+i] !== 0 && pattern[j * 14 + i] !== color) {
-                    count = 0
-                    continue
-                }
-            }
-        }
-
         
-        // 三斜
-        {
-            
-
+        for (let i = positonRange[1][0]; i <= positonRange[1][1]; i++) {
+            if (i + 4 < 14 && i >= 0) {
+                if(pattern[x * 14 + i] !==0 && pattern[x * 14 + i] === pattern[x * 14 + i+1] && pattern[x * 14 + i+2] === pattern[x * 14 + i+3] && pattern[x * 14 + i] === pattern[x * 14 + i+4] && pattern[x * 14 + i+1] === pattern[x * 14 + i+2]) {
+                    return true
+                }
+            }
         }
-        // {
-        //     let win = true
-        //     for (let i = 0; i < 14; i++) {
-        //         if (pattern[i*14+i] !== color) {
-        //             win = false
-        //         }
-        //     }
-        //     if(win) {
-        //             return true
-        //         }
+        
+        for (let i = positonRange[0][0], j = positonRange[1][0]; i <= positonRange[0][1] && j <= positonRange[1][1]; i++, j++) {
+            
+            if (i + 4 < 14 && i >= 0 && j + 4 < 14 && j >= 0) {
+                if(pattern[i*14 + j] !==0 && pattern[i*14 + j] === pattern[(i+1)*14 + j] && pattern[(i+2) * 14 + j] === pattern[(i+3)*14 + j] && pattern[i*14 + j] === pattern[(i+4)*14 + j] && pattern[(i+1)*14 + j] === pattern[(i+2) * 14 + j]) {
+                    return true
+                }
+            }
+        }
 
-        // }
+        for (let i = positonRange[0][0], j = positonRange[1][1]; i <= positonRange[0][1] && j >= positonRange[1][0]; i++, j--) {
+            if (i + 4 < 14 && i >= 0 && j + 4 < 14 && j >= 0) {
+                if(pattern[i*14 + j] !==0 && pattern[i*14 + j] === pattern[(i+1)*14 + j] && pattern[(i+2) * 14 + j] === pattern[(i+3)*14 + j] && pattern[i*14 + j] === pattern[(i+4)*14 + j] && pattern[(i+1)*14 + j] === pattern[(i+2) * 14 + j]) {
+                    return true
+                }
+            }
+        }
+        
         return false
     }
     
