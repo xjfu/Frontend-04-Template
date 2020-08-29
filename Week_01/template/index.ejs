@@ -1,0 +1,377 @@
+<!-- TicTacToe -->
+<!-- 策略 -->
+<!--  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* .class-container {
+            width: 340px;
+            padding: 10px;
+            border: 1px solid black;
+        } */
+    
+        #board {
+            width: 448px;
+            margin: 0 auto;
+            background: #48272782;
+            flex-wrap: wrap;
+            display: flex;
+        }
+        .class-radius-black {
+            background-color: black;
+            width: 30px;
+            height: 30px;
+            transform: translate(-50%);
+            position: absolute;
+            border-radius: 50%;
+        }
+        .class-radius-white {
+            background-color: white;
+            width: 30px;
+            
+            height: 30px;
+            transform: translate(-50%);
+        position: absolute;
+                border-radius: 50%;
+        }
+        .class-board {
+            position: absolute;
+            left: 100px;
+            top:100px;
+        }
+        .class-board-wrap {
+            width: 416px;
+            position: absolute;
+            left: 115px;
+            top: 115px;
+        }
+        .cell {
+            width: 30px;
+            flex-wrap: wrap;
+            height: 30px;
+            /* background-color: aqua; */
+            /* display: inline-block; */
+            /* width: 33%; */
+            border: 1px solid #ff000000;
+            vertical-align: middle;
+            margin: 0 auto;
+            padding: 0 auto;
+            line-height: 30px;
+            font-size: 30px;
+            text-align: center;
+        }
+        .cell-wrap {
+            width: 30px;
+            flex-wrap: wrap;
+            height: 30px;
+            background-color: #948c8c;
+            display: inline-block;
+            border: 1px solid ;
+            vertical-align: middle;
+            margin: 0 auto;
+            padding: 0 auto;
+            line-height: 10px;
+            text-align: center;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="class-container"> 
+        <div class="class-board-wrap">
+            <div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div><div class="cell-wrap"></div>
+        </div>
+        <div id="board" class="class-board">
+            <%_ for (var i=0; i < ms.length; i++) { _%>
+                    <%_if(ms[i]===2) {_%>
+                        <div class="cell" data-p=<%= i%> data-value=<%=ms[i]%>><span class="class-radius-black"></span></div>
+                    <%_} else if(ms[i]===1) {_%>
+                        <div class="cell"  data-p=<%= i %> data-value=<%=ms[i]%>><span class="class-radius-white"></span></div>
+                    <%_} else {_%> 
+                        <div class="cell"  data-p=<%= i %> data-value=<%=ms[i]%>></div>
+
+                    <%_} _%> 
+            <%_}_%>
+
+                
+        </div>
+    </div>
+   
+
+</body>
+</html>
+
+<script> 
+    const log = console.log.bind(console)
+
+    let winner = false
+    
+    // let pattern = [
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    // ]
+    
+    let color = 1
+
+    let board = document.getElementById("board")
+    board.addEventListener('click', ()=>Move(event))
+
+    function show(pattern) {
+        
+        let board = document.getElementById("board")
+        board.innerHTML = "" //清空board
+        for (let i = 0; i < 14; i++) {
+            for (let j = 0; j < 14; j++) {
+                let cell = document.createElement("div")
+                cell.classList.add("cell")
+                cell.innerHTML = pattern[i*14+j] == 2 ? `<span class="class-radius-black"></span>` : pattern[i*14+j] == 1 ? `<span class="class-radius-white"></span>` : ""
+                // 事件监听
+                cell.addEventListener('click', ()=>userMove(i,j,pattern))
+                board.appendChild(cell)
+            }
+        }
+    }
+
+    function Move(event) {
+        
+        let postion = event.target.dataset.p
+
+        log(postion)
+        
+        if (winner) {
+            return
+        }
+
+        if (pattern[x*14 + y] !== 0) {
+            return
+        }
+        
+        var request = {
+            method: 'POST',
+            url: '/api/post_json',
+            contentType: 'application/json',
+            data:data,
+            callback: function (response) {
+                log('response')
+            }
+        }
+        ajax(request)
+    }
+    
+    function userMove(x, y, pattern) {
+        if (winner) {
+            return
+        }
+        if (pattern[x*14 + y] !== 0) {
+            return
+        }
+        // 修改数据
+        // let pi = [x, y]
+        let data = JSON.stringify(pattern)
+        
+        pattern[x*14+y] = color
+        let p = [x, y]
+        let c = check(pattern, color, p)
+        
+        if(c) {
+            winner = true
+            alert(color == 2 ? `black is winner`: "white is winner")
+        }
+
+        color = 3-color
+        // addOne()
+        ajax(request)
+
+        // 判断胜利
+        //获取数据
+        
+
+        
+        // show(pattern)
+        // log(bestChoice(pattern, color))
+        // computerMove()
+        // if(willWin(pattern, color)) {
+        //     log(color == 2 ? "✗ is winner": "◯ is winner")
+        // }
+
+    }
+    // 判断输赢 三横三纵 加斜线
+    function computerMove() {
+        let choice = bestChoice(pattern, color) 
+        let p = choice.point
+        if (p) {
+            pattern[p[0]*14+p[1]] = color
+        }
+        if (check(pattern, color, p)) {
+            alert(color == 2 ? "✗ is winner": "◯ is winner")
+        }
+        color = 3 - color
+    }
+
+    function check(pattern, color, p) {
+        let x = p[0]
+        let y = p[1]
+        let positonRange = [
+            [x - 4, x + 4],
+            [y - 4, y + 4],
+        ]
+
+        for (let i = positonRange[0][0]; i <= positonRange[0][1]; i++) {
+
+            if (i + 4 < 14 && i >= 0) {
+                if(pattern[i*14 + y] === pattern[(i+1)*14 + y] && pattern[i*14 + y] !== 0) {
+                    if( pattern[(i+1)*14 + y] === pattern[(i+2) * 14 + y]) {
+                        if( pattern[(i+2) * 14 + y]=== pattern[(i+3)*14 + y]) {
+                            if( pattern[(i+3)*14 + y] === pattern[(i+4)*14 + y]) {
+                                // 添加样式
+
+                                return true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        for (let i = positonRange[1][0]; i <= positonRange[1][1]; i++) {
+            if (i + 4 < 14 && i >= 0) {
+                if(pattern[x * 14 + i] !==0 && pattern[x * 14 + i] === pattern[x * 14 + i+1] && pattern[x * 14 + i+2] === pattern[x * 14 + i+3] && pattern[x * 14 + i] === pattern[x * 14 + i+4] && pattern[x * 14 + i+1] === pattern[x * 14 + i+2]) {
+                    return true
+                }
+            }
+        }
+        
+        for (let i = positonRange[0][0], j = positonRange[1][0]; i <= positonRange[0][1] && j <= positonRange[1][1]; i++, j++) {
+            
+            if (i + 4 < 14 && i >= 0 && j + 4 < 14 && j >= 0) {
+                if(pattern[i*14 + j] !==0 && pattern[i*14 + j] === pattern[(i+1)*14 + j+1] && pattern[(i+2) * 14 + j+2] === pattern[(i+3)*14 + j+3] && pattern[i*14 + j] === pattern[(i+4)*14 + j+4] && pattern[(i+1)*14 + j+1] === pattern[(i+2) * 14 + j+2]) {
+                    return true
+                }
+            }
+        }
+
+        for (let i = positonRange[0][0], j = positonRange[1][1]; i <= positonRange[0][1] && j >= positonRange[1][0]; i++, j--) {
+            if (i + 4 < 14 && i >= 0 && j - 4 >= 0 && j < 14) {
+                if(pattern[i*14 + j] !==0 && pattern[i*14 + j] === pattern[(i+1)*14 + j-1] && pattern[(i+2) * 14 + j-2] === pattern[(i+3)*14 + j-3] && pattern[i*14 + j] === pattern[(i+4)*14 + j-4] && pattern[(i+1)*14 + j-1] === pattern[(i+2) * 14 + j-2]) {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    function willWin(pattern, color) {
+        for (let i = 0; i < 14; i++) {
+            for (let j = 0; j < 14; j++) {
+                if (pattern[i*14+j]!==0) {
+                    continue
+                }
+                // 如果是空，克隆，走这一步
+                let tem = clone(pattern)
+                tem[i*14+j] = color
+                if(check(tem, color)) {
+                    return [i, j]
+                }
+                
+            }
+            
+        }
+        return null
+    }
+
+    function clone(pattern) {
+        return Object.create(pattern)
+    }
+    
+    function bestChoice(pattern, color) {
+        let p = willWin(pattern,color)
+        if (p) {
+            return {
+                point:p,
+                result:1,
+            }
+        }
+        let result = -2
+        let point = null
+        outer:for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (pattern[i*14+j] !== 0) {
+                    continue
+                } else {
+                    let tmp = clone(pattern)
+                    tmp[i*14+j] = color
+                    let r = bestChoice(tmp, 3-color)
+                    if (-r.result >= result) {
+                        result = -r.result
+                        point = [i, j]
+                    }
+                    if (result == 1) {
+                        break outer
+                    }
+                }
+            }
+            
+        }
+        return {
+            point: point,
+            result: point ? result : 0,
+        }
+    }
+
+</script>
+
+<script>
+    var ajax = function (request) {
+    
+        var r = new XMLHttpRequest()
+        r.open(request.method, request.url, true)
+        if (request.contentType !== undefined) {
+            r.setRequestHeader('Content-Type', request.contentType)
+        }
+        r.onreadystatechange = function (event) {
+            if (r.readyState === 4) {
+                request.callback(r.response)
+            }
+        }
+        if (request.method === 'GET') {
+            r.send()
+        } else {
+            r.send(request.data)
+        }
+    }
+    
+    var addOne = function() {
+        // let d = JSON.stringify()
+        var request = {
+            method: 'GET',
+            url: '/api/get_json',
+            contentType: 'application/json',
+            // data:d,
+            callback: function (response) {
+                let pattern = JSON.parse(response)
+                // show(pattern)
+            }
+        }
+
+        ajax(request)
+    }
+    // ajax(request)
+    // addOne()
+</script>
