@@ -16,9 +16,7 @@
 
 
 </style>
-<div id="container">
-
-</div>
+<div id="container"></div>
 <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
 <script>
     const log = console.log.bind(console)
@@ -56,17 +54,26 @@
     document.addEventListener("mouseup", ()=>{mousedown = false})
     document.addEventListener("contextmenu",e => e.preventDefault())
 
+    function sleep(t) {
+        return new Promise((resolve, reject)=>{
+            setTimeout(resolve, t)
+        })
+    }
+
     
-    function path(map, start, end) {
+    async function path(map, start, end) {
         var queue = [start]
 
-        function insert(x, y) {
+        async function insert(x, y) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
             }
             if (map[y * 100 + x]) {
                 return 
             }
+            await sleep(30)
+
+            container.children[y * 100 + x].style.backgroundColor = "lightgreen"
             map[y * 100 + x] = 2
             queue.push([x, y])
         }
@@ -76,11 +83,11 @@
             if (x === end[0] && y === end[1]) {
                 return true
             }
-            insert(x - 1, y)
-            insert(x + 1, y)
-            insert(x, y - 1)
-            insert(x, y + 1)
+            await insert(x - 1, y)
+            await insert(x + 1, y)
+            await insert(x, y - 1)
+            await insert(x, y + 1)
         }
     }
-    
+
 </script>

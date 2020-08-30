@@ -16,9 +16,7 @@
 
 
 </style>
-<div id="container">
-
-</div>
+<div id="container"></div>
 <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
 <script>
     const log = console.log.bind(console)
@@ -56,31 +54,54 @@
     document.addEventListener("mouseup", ()=>{mousedown = false})
     document.addEventListener("contextmenu",e => e.preventDefault())
 
-    
-    function path(map, start, end) {
-        var queue = [start]
+    function sleep(t) {
+        return new Promise((resolve, reject)=>{
+            setTimeout(resolve, t)
+        })
+    }
 
-        function insert(x, y) {
+    
+    async function findPath(map, start, end) {
+        let table = Object.create(map)
+        let queue = [start]
+
+        async function insert(x, y, pre) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
             }
-            if (map[y * 100 + x]) {
-                return 
+            if (table[y * 100 + x]) {
+                return
             }
-            map[y * 100 + x] = 2
+            sleep(20)
+            container.children[y * 100 + x].style.backgroundColor = "lightgreen"
+            table[y * 100 + x] = pre
+            // map[y * 100 + x] = 2
             queue.push([x, y])
         }
         while (queue.length) {
+
             let [x, y] = queue.shift()
-            log(x, y)
             if (x === end[0] && y === end[1]) {
-                return true
+                let path = []
+                while (x != start[0] || y !== start[1]) {
+                    path.push(map[y * 100 + x])
+                    [x, y] = table[y * 100 + x] //解构赋值
+                    sleep(30)
+                    container.children[y * 100 + x].style.backgroundColor = "purple" 
+
+                }
             }
-            insert(x - 1, y)
-            insert(x + 1, y)
-            insert(x, y - 1)
-            insert(x, y + 1)
+            await insert(x - 1, y, [x, y])
+            await insert(x + 1, y, [x, y])
+            await insert(x, y - 1, [x, y])
+            await insert(x, y + 1, [x, y])
+
+            await insert(x - 1, y-1, [x, y])
+            await insert(x - 1, y+1, [x, y])
+            await insert(x+1, y - 1, [x, y])
+            await insert(x+1, y + 1, [x, y])
+
         }
     }
-    
+
 </script>
