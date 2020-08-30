@@ -1,0 +1,60 @@
+<style>
+    .cell {
+        width: 6px;
+        height: 6px;
+        background-color: gray;
+        display: inline-block;
+        line-height: 7px;
+        border-bottom: 1px solid white;
+        border-right: 1px solid white;
+        vertical-align: middle;
+        
+    }
+    #container {
+        width: 701px;
+    }
+
+
+</style>
+<div id="container">
+
+</div>
+<button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
+<script>
+    const log = console.log.bind(console)
+    let map = localStorage["map"] ? JSON.parse(localStorage["map"]) : Array(10000).fill(0)
+    log('mag',map)
+    let container = document.querySelector("#container")
+    let mousedown = false
+    let clear = false
+    for (let i = 0; i < 100; i++) {
+        for (let j = 0; j < 100; j++) {
+            let cell = document.createElement("div")
+            cell.classList.add("cell")
+            if (map[100 * i + j] === 1) {
+                cell.style.backgroundColor = "black"
+            }
+            cell.addEventListener('mousemove', ()=>{
+                if (mousedown) {
+                    if (clear) {
+                        cell.style.backgroundColor = ""
+                        map[100 * i + j] = 0
+                    } else {
+                        cell.style.backgroundColor = "black"
+                        map[100 * i + j] = 1
+                    }
+                }
+            })  
+            container.appendChild(cell)    
+        }
+        
+    }
+    document.addEventListener("mousedown", e =>{
+        mousedown = true
+        clear = (e.which === 3)
+    })
+    document.addEventListener("mouseup", ()=>{mousedown = false})
+    document.addEventListener("contextmenu",e => e.preventDefault())
+
+    
+</script>
