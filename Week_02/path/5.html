@@ -95,7 +95,6 @@
         let table = Object.create(map)
 
         let queue = new Sorted([start], (a, b)=>distance(a)-distance(b))
-        log("queue", queue)
         async function insert(x, y, pre) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
