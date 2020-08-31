@@ -93,8 +93,9 @@
     async function findPath(map, start, end) {
         
         let table = Object.create(map)
+
         let queue = new Sorted([start], (a, b)=>distance(a)-distance(b))
-        
+        log("queue", queue)
         async function insert(x, y, pre) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
@@ -102,8 +103,8 @@
             if (table[y * 100 + x]) {
                 return
             }
-            await sleep(5)
             
+            // await sleep(5)
             container.children[y * 100 + x].style.backgroundColor = "lightgreen"
             table[y * 100 + x] = pre
             
@@ -118,6 +119,7 @@
         while (queue.length) {
 
             let [x, y] = queue.take()
+            log('x, y',x, y)
             if (x === end[0] && y === end[1]) {
                 
                 let path = []
