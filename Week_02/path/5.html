@@ -16,28 +16,60 @@
 </style>
 <div id="container"></div>
 <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
+<!-- <button onclick="localStorage.clear()">clear</button> -->
 
 <script>
+    // 将 queue 变成一个有一定优先级的点
+    class Sorted {
+        constructor(data, compare) {
+            this.data = data.slice() //data 保存一份
+            this.compare = compare || ((a, b) => a - b)
+
+        }
+        toke() {
+            // 
+            if (!this.data.length) {
+                return 
+            }
+            let min = this.data[0]
+            let minIndex = 0
+            // 找到最小的数
+            for (let i = 0; i < this.data.length.length; i++) {
+                if (this.compare(this.data[i], min) < 0) {
+                    min = this.data[i];
+                    minIndex = i
+                }
+               
+            }
+            this.data[minIndex] = this.data[this.data.length - 1] //和最后一个元素交换， 将最后一个元素值写入
+            this.data.pop()
+            return min
+        }
+        give(v) {
+            this.data.push(v)
+        }
+    }
+    
     const log = console.log.bind(console)
     let map = localStorage["map"] ? JSON.parse(localStorage["map"]) : Array(10000).fill(0)
-    let container = document.querySelector("#container")
+    let container = document.getElementById("container")
     let mousedown = false
     let clear = false
-    for (let i = 0; i < 100; i++) {
-        for (let j = 0; j < 100; j++) {
+    for (let x = 0; x < 100; x++) {
+        for (let y = 0; y < 100; y++) {
             let cell = document.createElement("div")
             cell.classList.add("cell")
-            if (map[100 * i + j] === 1) {
+            if (map[100 * x + y] === 1) {
                 cell.style.backgroundColor = "black"
             }
             cell.addEventListener('mousemove', ()=>{
                 if (mousedown) {
                     if (clear) {
                         cell.style.backgroundColor = ""
-                        map[100 * i + j] = 0
+                        map[100 * x + y] = 0
                     } else {
                         cell.style.backgroundColor = "black"
-                        map[100 * i + j] = 1
+                        map[100 * x + y] = 1
                     }
                 }
             })  
@@ -58,11 +90,11 @@
         })
     }
 
-    
     async function findPath(map, start, end) {
         
         let table = Object.create(map)
-        let queue = [start]
+        let queue = new Sorted([start], (a, b)=>distance(a)-distance(b))
+        
         async function insert(x, y, pre) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
@@ -70,28 +102,31 @@
             if (table[y * 100 + x]) {
                 return
             }
-            // await sleep(20)
+            await sleep(5)
+            
             container.children[y * 100 + x].style.backgroundColor = "lightgreen"
             table[y * 100 + x] = pre
             
             // map[y * 100 + x] = 2
-            queue.push([x, y])
+            queue.give([x, y])
+
+        }
+        function distance(point) {
+            return (point[0]-end[0]) ** 2 + (point[1]-end[1]) ** 2
         }
 
         while (queue.length) {
 
-            let [x, y] = queue.shift()
-            log([x,y])
+            let [x, y] = queue.take()
             if (x === end[0] && y === end[1]) {
                 
                 let path = []
                 while (x != start[0] || y != start[1]) {
-                    path.push(queue[y * 100 + x])
+                    path.push(map[y * 100 + x])
+                    
                     [x, y] = table[y*100 + x]
-                  
-                    await sleep(30)
+                    
                     container.children[y * 100 + x].style.backgroundColor = "purple" 
-
                 }
                 return path
             }

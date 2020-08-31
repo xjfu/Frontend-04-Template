@@ -16,10 +16,41 @@
 </style>
 <div id="container"></div>
 <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
+<!-- <button onclick="localStorage.clear()">clear</button> -->
+
 <script>
+    // 将 queue 变成一个有一定优先级的点
+    class Sorted {
+        constructor(data, compare) {
+            this.data = data.slice() //data 保存一份
+            this.compare = compare || ((a, b) => a - b)
+
+        }
+        toke() {
+            // 
+            if (!this.data.length) {
+                return 
+            }
+            let min = this.data[0]
+            let minIndex = 0
+            // 找到最小的数
+            for (let i = 0; i < this.data.length.length; i++) {
+                if (this.compare(this.data[i], min) < 0) {
+                    const min = this.data[i];
+                    minIndex = i
+                }
+               
+            }
+            this.data[minIndex] = this.data[this.data.length - 1] //和最后一个元素交换， 将最后一个元素值写入
+            this.data.pop()
+            return min
+        }
+        give(v) {
+            this.data.push(v)
+        }
+    }
     const log = console.log.bind(console)
     let map = localStorage["map"] ? JSON.parse(localStorage["map"]) : Array(10000).fill(0)
-    log('mag',map)
     let container = document.querySelector("#container")
     let mousedown = false
     let clear = false
@@ -50,7 +81,6 @@
         clear = (e.which === 3)
     })
     document.addEventListener("mouseup", ()=>mousedown = false)
-    
     document.addEventListener("contextmenu",e => e.preventDefault())
 
     function sleep(t) {
@@ -60,32 +90,53 @@
     }
 
     
-    async function path(map, start, end) {
-        var queue = [start]
-
-        async function insert(x, y) {
+    async function findPath(map, start, end) {
+        
+        let table = Object.create(map)
+        let queue = [start]
+        async function insert(x, y, pre) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
             }
-            if (map[y * 100 + x] && map[y*100 + x] !== 1) {
-                return 
+            if (table[y * 100 + x]) {
+                return
             }
-            await sleep(30)
-
+            // await sleep(20)
             container.children[y * 100 + x].style.backgroundColor = "lightgreen"
-            map[y * 100 + x] = 2
+            table[y * 100 + x] = pre
+            
+            // map[y * 100 + x] = 2
             queue.push([x, y])
         }
+
         while (queue.length) {
+
             let [x, y] = queue.shift()
+            log([x,y])
             if (x === end[0] && y === end[1]) {
-                return true
+                
+                let path = []
+                while (x != start[0] || y != start[1]) {
+                    path.push(map[y * 100 + x])
+                    
+                    [x, y] = table[y*100 + x]
+                    await sleep(30)
+                    container.children[y * 100 + x].style.backgroundColor = "purple" 
+                }
+                return path
             }
-            await insert(x - 1, y)
-            await insert(x + 1, y)
-            await insert(x, y - 1)
-            await insert(x, y + 1)
+            await insert(x - 1, y, [x, y])
+            await insert(x, y-1, [x, y])
+            await insert(x+1, y, [x, y])
+            await insert(x, y + 1, [x, y])
+
+            await insert(x - 1, y-1, [x, y])
+            await insert(x + 1, y-1, [x, y])
+            await insert(x-1, y + 1, [x, y])
+            await insert(x+1, y + 1, [x, y])
+
         }
+        return null
     }
 
 </script>
