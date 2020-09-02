@@ -61,10 +61,10 @@
 
     
     async function findPath(map, start, end) {
-        
-        let table = Object.create(map)
         let queue = [start]
-        async function insert(x, y, pre) {
+        let table = Object.create(map)
+        
+        function insert(x, y, pre) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
             }
@@ -80,19 +80,21 @@
 
         while (queue.length) {
             let [x, y] = queue.shift()
-            log(x, y)
-            if (x === end[0] && y === end[1]) {
+
+            if (x == end[0] && y == end[1]) {
                 
 
                 let path = []
                 while (x != start[0] || y != start[1]) {
-                    path.push(map[y * 100 + x])
-                    [x, y] = table[y*100 + x] 
+                    path.push([x, y])
+                    
+                    
                     await sleep(30)
-                    container.children[y * 100 + x].style.backgroundColor = "purple" 
+                    container.children[y * 100 + x].style.backgroundColor = "red" 
+                    [x, y] = table[y*100 + x] 
                 }
                 
-               
+                
                 return path
             }
             await insert(x - 1, y, [x, y]);

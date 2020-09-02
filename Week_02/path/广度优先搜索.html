@@ -62,7 +62,7 @@
     
     async function path(map, start, end) {
         var queue = [start]
-
+        
         async function insert(x, y) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
@@ -78,7 +78,6 @@
         }
         while (queue.length) {
             let [x, y] = queue.shift()
-            
             if (x === end[0] && y === end[1]) {
                 container.children[y * 100 + x].style.backgroundColor = "red"
                 return true

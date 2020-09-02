@@ -14,6 +14,7 @@
         width: 701px;
     }
 </style>
+
 <div id="container"></div>
 <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
 <!-- <button onclick="localStorage.clear()">clear</button> -->
@@ -24,9 +25,8 @@
         constructor(data, compare) {
             this.data = data.slice() //data 保存一份
             this.compare = compare || ((a, b) => a - b)
-
         }
-        toke() {
+        take() {
             // 
             if (!this.data.length) {
                 return 
@@ -34,7 +34,7 @@
             let min = this.data[0]
             let minIndex = 0
             // 找到最小的数
-            for (let i = 0; i < this.data.length.length; i++) {
+            for (let i = 1; i < this.data.length.length; i++) {
                 if (this.compare(this.data[i], min) < 0) {
                     min = this.data[i];
                     minIndex = i
@@ -91,10 +91,11 @@
     }
 
     async function findPath(map, start, end) {
+        let queue = new Sorted([start], (a, b)=>distance(a)-distance(b))
+        // log(queue)
         
         let table = Object.create(map)
 
-        let queue = new Sorted([start], (a, b)=>distance(a)-distance(b))
         async function insert(x, y, pre) {
             if (x < 0 || x >= 100 || y < 0 || y >= 100) {
                 return
@@ -106,19 +107,18 @@
             // await sleep(5)
             container.children[y * 100 + x].style.backgroundColor = "lightgreen"
             table[y * 100 + x] = pre
-            
+
             // map[y * 100 + x] = 2
             queue.give([x, y])
 
         }
+        
         function distance(point) {
             return (point[0]-end[0]) ** 2 + (point[1]-end[1]) ** 2
         }
-
+        log(queue.length)
         while (queue.length) {
-
             let [x, y] = queue.take()
-            log('x, y',x, y)
             if (x === end[0] && y === end[1]) {
                 
                 let path = []
