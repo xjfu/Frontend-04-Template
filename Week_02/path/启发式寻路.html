@@ -130,12 +130,12 @@
             let [x, y] = queue.take()
             if (x === end[0] && y === end[1]) {
                 // log(queue.getLength())
-                
                 let path = []
                 while (x != start[0] || y != start[1]) {
-                    path.push(map[y * 100 + x])
-                    log(x, y)
-                    // [x, y] = table[y*100 + x]
+                    path.push(map[y * 100 + x]);
+                
+
+                    [x, y] = table[y*100 + x];
                     container.children[y * 100 + x].style.backgroundColor = "red" 
                 }
                 return path
