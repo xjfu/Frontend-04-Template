@@ -1,0 +1,56 @@
+<script>
+    // 1、根据模式串算出算法的表格
+    // 2、根据跳转表格原串和字符串比较
+    // leetcode 28
+    var log = function() {
+        
+        console.log.apply(console, arguments)
+    }
+
+    function kmp(source, pattern) {
+        let table = new Array(pattern.length).fill(0)
+        {
+            let i = 1, j = 0;
+            while(i < pattern.length) {
+                if (pattern[i] === pattern[j]) {
+                    ++j, ++i;
+                    table[i] = j;
+                } else {
+                    if (j > 0) {
+                        j = table[j];
+                    } else {
+                        // table[i] = j
+                        ++i;
+                    }
+
+
+                }
+                
+            }
+
+        }
+        {
+            let i = 0, j = 0;
+            while(i < source.length) {
+                if (pattern[j] === source[i]) {
+                    ++i, ++j;
+                } else {
+                    if (j > 0) {
+                        j = table[j];
+                    } else {
+                        // table[i] = j
+                        ++i;
+                    }
+
+                }
+                if (j === pattern.length) {
+                    return true
+                }
+
+            }
+            return false
+
+        }
+    }
+    log(kmp("zaabaaacx", "aabaaac"))
+</script>
