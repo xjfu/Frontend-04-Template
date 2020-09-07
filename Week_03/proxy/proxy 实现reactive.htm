@@ -1,0 +1,40 @@
+<script>
+    let log = function() {
+    
+        console.log.apply(console, arguments)
+    }
+    let callbacks = []
+    let object = {
+        a: 1,
+        b: 2,
+    }
+    // 第二个参数包含了要对po做的一些钩子
+
+
+    let po = reactive(object)
+
+    effect(()=>{
+        log(po.a)
+    })
+    function effect(callback) {
+        callbacks.push(callback)
+    }
+    function reactive(object) {
+        return new Proxy(object, {
+        // 设置对象属性的时候
+            set(obj, prop, val) {
+                obj[prop] = val
+                // log(obj, prop, val)
+                for (let callback of callbacks) {
+                    callback()
+                }
+                return obj[prop];
+            },
+            get(obj, prop) {
+                // log(obj, prop)
+                return obj[prop];
+            }
+        })
+    }
+
+</script>

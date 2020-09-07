@@ -1,0 +1,21 @@
+<script>
+    var log = function() {
+    
+        console.log.apply(console, arguments)
+    }
+
+    var object = {
+        a: 1,
+        b: 2,
+    }
+    // 第二个参数包含了要对po做的一些钩子
+
+    let po = new Proxy(object, {
+        // 设置对象属性的时候
+        set(obj, prop, val) {
+            log(obj, prop, val)
+        }
+    })
+
+
+</script>
