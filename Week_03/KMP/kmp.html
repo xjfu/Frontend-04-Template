@@ -1,5 +1,9 @@
 <script>
-    // 1、根据模式串算出算法的表格
+    // 1、根据模式串算出算法回退的表格, 如果字符串和回退表格位置字符串不相等，则退回到回退表格字符位置的回退字符比较。
+    // a b c d a b c e      a b a b a b c
+    // 0 0 0 0 0 1 2 3      0 0 0 1 2 3 4
+
+
     // 2、根据跳转表格原串和字符串比较
     // leetcode 28
     var log = function() {
@@ -8,6 +12,7 @@
     }
 
     function kmp(source, pattern) {
+        // 计算table
         let table = new Array(pattern.length).fill(0)
         {
             let i = 1, j = 0;
