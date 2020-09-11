@@ -15,20 +15,32 @@
 
     let po = reactive(object)
 
+    // 监听po上的属性，以此来代替事件监听的机制
     effect(()=>{
         console.log(po.a)
-
     })
+
     function effect(callback) {
+        // 清空
         useReactives = []
+        // 
         callback()
+
+        // 将useReactives 中的对象[obj, props]用map {obj:props}存起来， reactivity 是一个二元组，
         for (let reactivity of useReactives) {
-            if (!callbacks.has(reactivity[0])) {
+            // 可能会发生多次注册，需要写一些防御性的代码, 如果没有在放进去。
+
+            if (!callbacks.has(reactivity[0])) { 
+                // 设置两层，第一层放对象，用map, 
                 callbacks.set(reactivity[0], new Map());
             }
+
+            // 第二层放属性, 直接用数组
+
             if (!callbacks.get(reactivity[0]).has(reactivity[1])) {
                 callbacks.get(reactivity[0]).set(reactivity[1], []);
             }
+            // 在两级索引props上push callback进去
             callbacks.get(reactivity[0]).get(reactivity[1]).push(callback)
         }
         // console.log(useReactives)
@@ -38,8 +50,11 @@
         // 设置对象属性的时候
             set(obj, prop, val) {
                 obj[prop] = val
+                // 有对象
                 if (callbacks.get(obj)) {
+                    // 有属性
                     if (callbacks.get(obj).get(prop)) {
+                        // 循环遍历属性中的每一个对象
                         for (let callback of callbacks.get(obj).get(prop)) {
                             callback()
                         }
@@ -48,6 +63,8 @@
                 return obj[prop];
             },
             get(obj, prop) {
+
+                // 调用po对象时，就会注册
                 useReactives.push([obj, prop])
                 return obj[prop];
             }

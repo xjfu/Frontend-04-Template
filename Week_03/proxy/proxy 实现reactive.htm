@@ -10,8 +10,8 @@
     }
     // 第二个参数包含了要对po做的一些钩子
 
-
-    let po = reactive(object)
+    // 封装proxy
+    let po = reactive(object) 
 
     effect(()=>{
         log(po.a)
