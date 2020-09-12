@@ -1,0 +1,32 @@
+
+<!-- range使用 -->
+<div id="range-out">
+    <div>
+        hehe
+    </div>
+</div>
+<div id="range-in">
+
+</div>
+<p>First paragraph.</p>
+<p>Second paragraph.</p>
+<p>Third paragraph.</p>
+<p>Fourth paragraph.</p>
+
+<script>
+var log =console.log.bind(console)
+const paragraphs = document.querySelector('#range-in')
+const rangeOut = document.querySelector("#range-out")
+// 创建 Range 对象
+const range = new Range();
+
+// Range 起始位置在段落2
+range.setStart(paragraphs, 0);
+// range.setStartAfter(paragraphs);
+
+// Range 结束位置在段落3
+
+range.insertNode(rangeOut)
+
+console.log(range)
+</script>
