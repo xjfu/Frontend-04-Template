@@ -1,21 +1,29 @@
 
 <!-- range使用 -->
+<div id="range-in">
+    <div id="swiper-1-1"></div>
+</div>
+
+    <p>First paragraph.</p>
+    <p>Second paragraph.</p>
+    <p>Third paragraph.</p>
+    <p>Fourth paragraph.</p>
 <div id="range-out">
     <div>
-        hehe
+        <div id="swiper-1-2">
+
+        </div>
+        
     </div>
 </div>
-<div id="range-in">
-
-</div>
-<p>First paragraph.</p>
-<p>Second paragraph.</p>
-<p>Third paragraph.</p>
-<p>Fourth paragraph.</p>
+    
 
 <script>
 var log =console.log.bind(console)
 const paragraphs = document.querySelector('#range-in')
+const range1 = document.querySelector('#swiper-1-1')
+const range2 = document.querySelector('#swiper-1-2')
+
 const rangeOut = document.querySelector("#range-out")
 // 创建 Range 对象
 const range = new Range();
@@ -29,4 +37,21 @@ range.setStart(paragraphs, 0);
 range.insertNode(rangeOut)
 
 console.log(range)
+
+const rangep = new Range()
+
+rangep.setStart(range1, 0)
+
+rangep.setEnd(range2, 0)
+
+let p =rangep.extractContents()
+let startR = rangep.startContainer
+let endR = rangep.endContainer
+// range.insertNode(rangep)
+
+let products = document.querySelectorAll('.h-product-group')
+var log = console.log.bind(console)
+log(products)
+console.log(endR)
+console.log(startR)
 </script>
