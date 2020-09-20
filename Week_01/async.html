@@ -53,11 +53,13 @@
     }
     function happen(element, eventName) {
         return new Promise((resolve, reject)=>{
+        
             element.addEventListener(eventName, resolve, {once:true})
         })
     }
     function sleep(t) {
         return new Promise((resolve, reject)=>{
+            
             setTimeout(resolve, t)
         })
     }
@@ -66,10 +68,9 @@
             green()
             // await sleep(1000)
             await happen(document.querySelector(".next"), "click")
-            yellow() 
+            yellow()
             // await sleep(200)
             await happen(document.querySelector(".next"), "click")
-
             red()
             // await sleep(500)
             await happen(document.querySelector(".next"), "click")
