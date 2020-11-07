@@ -18,8 +18,13 @@ var match_abcde = function(string) {
     for(let i=0; i < string.length; i++) {
         if(string[i] == 'a') {
             s = string.slice(i, i+6)
+            if (s == 'abcdef') {
+                return true
+            }
         }
+        
+
     }
-    return s == 'abcdef'
+    return false
         
 }
