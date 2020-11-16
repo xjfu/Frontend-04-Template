@@ -12,7 +12,6 @@ var match_a = function (string) {
     return flag
 }
 
-
 var match_abcde = function(string) {
     let s = ''
     for(let i=0; i < string.length; i++) {
@@ -29,3 +28,5 @@ var match_abcde = function(string) {
         
 }
 
+let a = match_abcde('abcdefalsdf')
+console.log('a', a)

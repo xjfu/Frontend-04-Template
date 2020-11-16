@@ -43,3 +43,4 @@ responseParser 分段处理responseText 用状态机来分析文本结构。
 
 bodyparser总结
 response的body可能和context-type有不同的结构，因此会采用子结构parser的结构来解决问题
+以trunkBodyParser为例，用状态机来处理body格式。
